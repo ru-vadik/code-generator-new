@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -44,7 +43,6 @@ func (p *RandomCode) GetCode() string {
 		p.codeBuilder.WriteString(char)
 	}
 
-	fmt.Println(p.codeBuilder.String())
 	return p.codeBuilder.String()
 }
 
