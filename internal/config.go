@@ -38,7 +38,7 @@ func NewConfig() *Config {
 	if c.Threads < 1 {
 		c.Threads = 1
 	}
-	c.BufferSize = 1024 * 1024
+	c.BufferSize = 100
 
 	c.Code.Length = 20
 	c.Code.Set = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}

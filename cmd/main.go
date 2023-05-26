@@ -1,14 +1,17 @@
 package main
 
 import (
-	"fmt"
-
 	"cg-new/internal"
+	"fmt"
 )
 
 func main() {
 	config := internal.NewConfig()
-
-	fmt.Println(config)
+	planFile := internal.NewPlanFile(config)
+	planFile.C <- "a"
+	planFile.C <- "b"
+	close(planFile.C)
 	config.Save()
+
+	fmt.Println("OK")
 }
