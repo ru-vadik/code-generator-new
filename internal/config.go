@@ -48,6 +48,11 @@ func NewConfig() *Config {
 
 	c.load()
 
+	// Для маленьких значений Qty выходной файл получается пустым
+	if c.Qty < 100 {
+		c.Qty = 100
+	}
+
 	return c
 }
 
@@ -68,18 +73,15 @@ func (p *Config) load() {
 }
 
 func (p *Config) Save() {
-	_, err := os.Stat(configFileName)
-	if os.IsNotExist(err) {
-		jsonFile, err := os.Create(configFileName)
-		if err != nil {
-			panic(err)
-		}
-		defer jsonFile.Close()
+	jsonFile, err := os.Create(configFileName)
+	if err != nil {
+		panic(err)
+	}
+	defer jsonFile.Close()
 
-		_, err = jsonFile.WriteString(p.String())
-		if err != nil {
-			panic(err)
-		}
+	_, err = jsonFile.WriteString(p.String())
+	if err != nil {
+		panic(err)
 	}
 }
 
