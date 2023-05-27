@@ -11,4 +11,8 @@ vendor:
 	go mod tidy
 	go mod vendor
 
+.PHONY: test
+test:
+	go test -v -timeout 60s ./...
+
 .DEFAULT_GOAL := run
