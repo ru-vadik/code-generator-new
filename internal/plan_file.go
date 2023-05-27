@@ -46,8 +46,8 @@ func (p *PlanFile) close() {
 }
 
 func (p *PlanFile) write() {
-	for s := range p.C {
-		p.writer.WriteString(s)
+	for code := range p.C {
+		p.writer.WriteString(code)
 		p.writer.WriteString(p.config.EOF)
 		if p.config.InLine {
 			p.writer.WriteString(p.config.EOF)
