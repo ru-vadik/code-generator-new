@@ -8,6 +8,7 @@ build:
 
 .PHONY: vendor
 vendor:
+	go mod tidy
 	go mod vendor
 
 .DEFAULT_GOAL := run
