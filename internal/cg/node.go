@@ -1,4 +1,4 @@
-package internal
+package cg
 
 type node struct {
 	value string

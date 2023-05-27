@@ -1,13 +1,13 @@
 package main
 
 import (
-	"cg-new/internal"
+	"cg-new/internal/cg"
 )
 
 func main() {
-	config := internal.NewConfig()
-	planFile := internal.NewPlanFile(config)
-	binaryTree := internal.NewBinaryTree(config, planFile)
+	config := cg.NewConfig()
+	planFile := cg.NewPlanFile(config)
+	binaryTree := cg.NewBinaryTree(config, planFile)
 	binaryTree.Start()
 
 	config.Save()
