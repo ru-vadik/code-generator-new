@@ -3,7 +3,6 @@ package cg
 import (
 	"encoding/json"
 	"os"
-	"runtime"
 )
 
 const (
@@ -14,7 +13,6 @@ type Config struct {
 	Qty        int
 	InLine     bool
 	EOF        string
-	Threads    int
 	BufferSize int
 
 	Code Code
@@ -34,10 +32,6 @@ func NewConfig() *Config {
 	c.Qty = 1000
 	c.InLine = false
 	c.EOF = "\r\n"
-	c.Threads = runtime.NumCPU() - 1
-	if c.Threads < 1 {
-		c.Threads = 1
-	}
 	c.BufferSize = 100
 
 	c.Code.Length = 20
