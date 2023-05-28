@@ -16,7 +16,6 @@ import (
 
 const (
 	DEFAULT_QTY = 1000
-	DB_NAME     = "codes_test.sqlite"
 )
 
 var (
@@ -32,7 +31,10 @@ func TestMain(m *testing.M) {
 
 func TestCg(t *testing.T) {
 	config := cg.NewConfig()
+	config.Qty = DEFAULT_QTY
+
 	planFile := cg.NewPlanFile(config)
+	fmt.Println(planFile.FileName)
 	binaryTree := cg.NewBinaryTree(config, planFile)
 	binaryTree.Start()
 
@@ -65,6 +67,8 @@ func checkCount(t *testing.T) {
 }
 
 func checkUnique(t *testing.T) {
+	const DB_NAME = "codes_test.sqlite"
+
 	db, err := sql.Open("sqlite3", DB_NAME)
 	if err != nil {
 		log.Fatal(err)
