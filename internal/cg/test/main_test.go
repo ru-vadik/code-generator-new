@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	DEFAULT_QTY = 1000
+	DEFAULT_QTY = 1000000
 )
 
 var (
