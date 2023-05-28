@@ -48,11 +48,6 @@ func NewConfig() *Config {
 
 	c.load()
 
-	// Для маленьких значений Qty выходной файл получается пустым
-	if c.Qty < 100 {
-		c.Qty = 100
-	}
-
 	return c
 }
 
