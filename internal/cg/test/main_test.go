@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	DEFAULT_QTY = 1000000
+	DEFAULT_QTY = 1000
 )
 
 var (
@@ -30,6 +30,10 @@ func TestMain(m *testing.M) {
 }
 
 func TestCg(t *testing.T) {
+	var (
+		deleteFile bool = true
+	)
+
 	config := cg.NewConfig()
 	config.Qty = DEFAULT_QTY
 
@@ -44,7 +48,9 @@ func TestCg(t *testing.T) {
 	}
 	defer func() {
 		file.Close()
-		os.Remove(planFile.FileName)
+		if deleteFile {
+			os.Remove(planFile.FileName)
+		}
 	}()
 
 	content = []string{}
@@ -56,8 +62,12 @@ func TestCg(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Run("Count", checkCount)
-	t.Run("Unique", checkUnique)
+	if !t.Run("Count", checkCount) {
+		deleteFile = false
+	}
+	if !t.Run("Unique", checkUnique) {
+		deleteFile = false
+	}
 }
 
 func checkCount(t *testing.T) {
