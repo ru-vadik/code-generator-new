@@ -1,15 +1,9 @@
 package cg
 
-import (
-	"sync"
-)
-
 type BinaryTree struct {
 	config   *Config
 	planFile *PlanFile
 
-	wg       *sync.WaitGroup
-	mu       *sync.Mutex
 	rootNode *node
 	counter  int
 }
@@ -19,8 +13,6 @@ func NewBinaryTree(config *Config, planFile *PlanFile) *BinaryTree {
 		config:   config,
 		planFile: planFile,
 
-		wg:       &sync.WaitGroup{},
-		mu:       &sync.Mutex{},
 		rootNode: nil,
 		counter:  0,
 	}
@@ -31,18 +23,7 @@ func (p *BinaryTree) Start() {
 		close(p.planFile.C)
 	}()
 
-	p.wg.Add(p.config.Threads)
-	for i := 0; i < p.config.Threads; i++ {
-		go p.work()
-	}
-	p.wg.Wait()
-}
-
-func (p *BinaryTree) work() {
-	defer p.wg.Done()
-
 	randomCode := NewRandomCode(p.config)
-	p.mu.Lock()
 	for p.counter < p.config.Qty {
 		code := randomCode.GetCode()
 
@@ -50,7 +31,6 @@ func (p *BinaryTree) work() {
 			p.insert(code)
 		}
 	}
-	p.mu.Unlock()
 }
 
 func (p *BinaryTree) find(code string) *node {

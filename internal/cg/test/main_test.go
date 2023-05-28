@@ -3,9 +3,11 @@ package cg_test
 import (
 	"bufio"
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 	"testing"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -14,33 +16,14 @@ import (
 
 const (
 	DEFAULT_QTY = 1000
-	DB_NAME     = "codes_test.sqlite"
 )
 
 var (
 	content []string
-	db      *sql.DB
 )
 
 func TestMain(m *testing.M) {
-	var err error
-	db, err = sql.Open("sqlite3", DB_NAME)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func() {
-		db.Close()
-		os.Remove(DB_NAME)
-	}()
-
-	db.Exec(`
-DROP TABLE IF EXISTS codes
-		`)
-	db.Exec(`
-CREATE TABLE codes (
-	code TEXT NOT NULL UNIQUE
-) STRICT
-		`)
+	fmt.Println(time.Now())
 
 	code := m.Run()
 	os.Exit(code)
@@ -48,7 +31,10 @@ CREATE TABLE codes (
 
 func TestCg(t *testing.T) {
 	config := cg.NewConfig()
+	config.Qty = DEFAULT_QTY
+
 	planFile := cg.NewPlanFile(config)
+	fmt.Println(planFile.FileName)
 	binaryTree := cg.NewBinaryTree(config, planFile)
 	binaryTree.Start()
 
@@ -81,6 +67,26 @@ func checkCount(t *testing.T) {
 }
 
 func checkUnique(t *testing.T) {
+	const DB_NAME = "codes_test.sqlite"
+
+	db, err := sql.Open("sqlite3", DB_NAME)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		db.Close()
+		os.Remove(DB_NAME)
+	}()
+
+	db.Exec(`
+DROP TABLE IF EXISTS codes
+		`)
+	db.Exec(`
+CREATE TABLE codes (
+	code TEXT NOT NULL UNIQUE
+) STRICT
+		`)
+
 	tx, err := db.Begin()
 	if err != nil {
 		t.Fatal(err)
@@ -97,7 +103,7 @@ INSERT INTO codes (code) VALUES (?)
 		_, err = stmt.Exec(s)
 		if err != nil {
 			tx.Rollback()
-			t.Fatal(err)
+			t.Fatalf("%s, code: %s", err, s)
 		}
 	}
 
