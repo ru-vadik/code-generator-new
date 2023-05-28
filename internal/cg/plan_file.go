@@ -21,7 +21,7 @@ func NewPlanFile(config *Config) *PlanFile {
 	planFile := &PlanFile{
 		config:   config,
 		FileName: "codes_" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt",
-		C:        make(chan string, config.BufferSize),
+		C:        make(chan string, 1),
 	}
 	planFile.open()
 

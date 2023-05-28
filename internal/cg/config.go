@@ -10,10 +10,9 @@ const (
 )
 
 type Config struct {
-	Qty        int
-	InLine     bool
-	EOF        string
-	BufferSize int
+	Qty    int
+	InLine bool
+	EOF    string
 
 	Code Code
 }
@@ -32,7 +31,6 @@ func NewConfig() *Config {
 	c.Qty = 1000
 	c.InLine = false
 	c.EOF = "\r\n"
-	c.BufferSize = 100
 
 	c.Code.Length = 20
 	c.Code.Set = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
