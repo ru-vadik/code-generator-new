@@ -28,7 +28,10 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	defer func() {
+		db.Close()
+		os.Remove(DB_NAME)
+	}()
 
 	db.Exec(`
 DROP TABLE IF EXISTS codes
@@ -53,7 +56,10 @@ func TestCg(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer file.Close()
+	defer func() {
+		file.Close()
+		os.Remove(planFile.FileName)
+	}()
 
 	content = []string{}
 	scanner := bufio.NewScanner(file)
