@@ -3,3 +3,5 @@
 config.json
 codes_*.txt
 codes_test.sqlite
+*.prof
+*.exe
